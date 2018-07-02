@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Block-Breaker</title>
+        <style media="screen">
+            #id-canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="id-canvas" width="400" height="300"></canvas>
+    </body>
+    <script type="text/javascript">
+        var log = console.log.bind(console)
+
+        var imageFromPath = function(path) {
+            var img = new Image()
+            img.src = path
+            return img
+        }
+
+        var Paddle = function() {
+            var image = imageFromPath("img/paddle.png")
+            var o = {
+                image: image,
+                x: 200,
+                y: 200,
+                speed: 5,
+            }
+            o.moveLeft = function() {
+                o.x -= o.speed
+            }
+            o.moveRight = function() {
+                o.x += o.speed
+            }
+            return o
+        }
+
+        var __main = function() {
+            var canvas = document.querySelector("#id-canvas")
+            var context = canvas.getContext("2d")
+
+            var paddle = Paddle()
+
+            // var x = 200
+            // var y = 200
+            // var speed = 3
+            // image.onload = function() {
+            //     context.drawImage(image, x, y)
+            // }
+
+            var leftDown = false
+            var rightDown = false
+
+            window.addEventListener("keydown", function(e){
+                var k = e.key
+                if(k === "a") {
+                    leftDown = true
+                }else if(k === "d") {
+                    rightDown = true
+                }
+            })
+
+            window.addEventListener("keyup", function(e){
+                var k = e.key
+                if(k === "a") {
+                    leftDown = false
+                }else if(k === "d") {
+                    rightDown = false
+                }
+            })
+
+            setInterval(function() {
+                // update x and y
+                if(leftDown) {
+                    paddle.moveLeft()
+                } else if (rightDown) {
+                    paddle.moveRight()
+                }
+                // draw
+                context.clearRect(0, 0, canvas.width, canvas.height)
+                context.drawImage(paddle.image, paddle.x, paddle.y)
+            }, 1000 / 30)
+        }
+
+        __main()
+    </script>
+</html>
