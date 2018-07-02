@@ -21,6 +21,51 @@
             return img
         }
 
+        var Game = function() {
+            // 将监听的事件移至对象里面，抽象至 Game 里面去
+            var g = {
+                actions: {},  // 存储事件定义函数
+                keydowns: {}, // 存储按键的状态
+            }
+            // events
+            window.addEventListener("keydown", function(event) {
+                g.keydowns[event.key] = true
+            })
+
+            window.addEventListener("keyup", function(event) {
+                g.keydowns[event.key] = false
+            })
+
+            g.registerAction = function(key, callback) {
+                g.actions[key] = callback
+            }
+            // timer
+            var canvas = document.querySelector("#id-canvas")
+            var context = canvas.getContext("2d")
+
+            g.canvas = canvas
+            g.context = context
+
+            setInterval(function() {
+                // update
+                var actions = Object.keys(g.actions)
+                for (var i = 0; i < actions.length; i++) {
+                    var key = actions[i]
+                    if(g.keydowns[key]) {
+                        // 被按下
+                        g.actions[key]()
+                    }
+                }
+                g.update()
+                // clear
+                context.clearRect(0, 0, g.canvas.width, g.canvas.height)
+                // draw
+                g.draw()
+            }, 1000 / 30)
+
+            return g
+        }
+
         var Paddle = function() {
             var image = imageFromPath("img/paddle.png")
             var o = {
@@ -39,50 +84,62 @@
         }
 
         var __main = function() {
-            var canvas = document.querySelector("#id-canvas")
-            var context = canvas.getContext("2d")
-
+            var game = Game()
             var paddle = Paddle()
 
-            // var x = 200
-            // var y = 200
-            // var speed = 3
-            // image.onload = function() {
-            //     context.drawImage(image, x, y)
-            // }
-
-            var leftDown = false
-            var rightDown = false
-
-            window.addEventListener("keydown", function(e){
-                var k = e.key
-                if(k === "a") {
-                    leftDown = true
-                }else if(k === "d") {
-                    rightDown = true
-                }
+            game.registerAction("a", function() {
+                paddle.moveLeft()
             })
 
-            window.addEventListener("keyup", function(e){
-                var k = e.key
-                if(k === "a") {
-                    leftDown = false
-                }else if(k === "d") {
-                    rightDown = false
-                }
+            game.registerAction("d", function() {
+                paddle.moveRight()
             })
 
-            setInterval(function() {
+            // var leftDown = false
+            // var rightDown = false
+            //
+            // window.addEventListener("keydown", function(e){
+            //     var k = e.key
+            //     if(k === "a") {
+            //         leftDown = true
+            //     }else if(k === "d") {
+            //         rightDown = true
+            //     }
+            // })
+            //
+            // window.addEventListener("keyup", function(e){
+            //     var k = e.key
+            //     if(k === "a") {
+            //         leftDown = false
+            //     }else if(k === "d") {
+            //         rightDown = false
+            //     }
+            // })
+
+            game.update = function() {
                 // update x and y
-                if(leftDown) {
-                    paddle.moveLeft()
-                } else if (rightDown) {
-                    paddle.moveRight()
-                }
-                // draw
-                context.clearRect(0, 0, canvas.width, canvas.height)
-                context.drawImage(paddle.image, paddle.x, paddle.y)
-            }, 1000 / 30)
+                // if(leftDown) {
+                //     paddle.moveLeft()
+                // } else if (rightDown) {
+                //     paddle.moveRight()
+                // }
+            }
+
+            game.draw = function() {
+                game.context.drawImage(paddle.image, paddle.x, paddle.y)
+            }
+
+            // setInterval(function() {
+            //     // update x and y
+            //     if(leftDown) {
+            //         paddle.moveLeft()
+            //     } else if (rightDown) {
+            //         paddle.moveRight()
+            //     }
+            //     // draw
+            //     context.clearRect(0, 0, canvas.width, canvas.height)
+            //     context.drawImage(paddle.image, paddle.x, paddle.y)
+            // }, 1000 / 30)
         }
 
         __main()
