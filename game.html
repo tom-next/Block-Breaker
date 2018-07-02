@@ -123,6 +123,7 @@
             }
             return o
         }
+
         var __main = function() {
             var game = Game()
 
@@ -140,34 +141,8 @@
             game.registerAction("f", function() {
                 ball.fire()
             })
-            // var leftDown = false
-            // var rightDown = false
-            //
-            // window.addEventListener("keydown", function(e){
-            //     var k = e.key
-            //     if(k === "a") {
-            //         leftDown = true
-            //     }else if(k === "d") {
-            //         rightDown = true
-            //     }
-            // })
-            //
-            // window.addEventListener("keyup", function(e){
-            //     var k = e.key
-            //     if(k === "a") {
-            //         leftDown = false
-            //     }else if(k === "d") {
-            //         rightDown = false
-            //     }
-            // })
 
             game.update = function() {
-                // update x and y
-                // if(leftDown) {
-                //     paddle.moveLeft()
-                // } else if (rightDown) {
-                //     paddle.moveRight()
-                // }
                 ball.move()
                 if(paddle.collide(ball)) {
                     ball.speedY *= -1
@@ -178,18 +153,6 @@
                 game.drawImage(paddle)
                 game.drawImage(ball)
             }
-
-            // setInterval(function() {
-            //     // update x and y
-            //     if(leftDown) {
-            //         paddle.moveLeft()
-            //     } else if (rightDown) {
-            //         paddle.moveRight()
-            //     }
-            //     // draw
-            //     context.clearRect(0, 0, canvas.width, canvas.height)
-            //     context.drawImage(paddle.image, paddle.x, paddle.y)
-            // }, 1000 / 30)
         }
 
         __main()
