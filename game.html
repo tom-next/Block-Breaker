@@ -39,6 +39,11 @@
             g.registerAction = function(key, callback) {
                 g.actions[key] = callback
             }
+
+            // drawImage
+            g.drawImage = function(GuaImage) {
+                g.context.drawImage(GuaImage.image, GuaImage.x, GuaImage.y)
+            }
             // timer
             var canvas = document.querySelector("#id-canvas")
             var context = canvas.getContext("2d")
@@ -126,7 +131,7 @@
             }
 
             game.draw = function() {
-                game.context.drawImage(paddle.image, paddle.x, paddle.y)
+                game.drawImage(paddle)
             }
 
             // setInterval(function() {
