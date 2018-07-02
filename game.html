@@ -77,7 +77,7 @@
                 image: image,
                 x: 200,
                 y: 200,
-                speed: 5,
+                speed: 15,
             }
             o.moveLeft = function() {
                 o.x -= o.speed
@@ -85,12 +85,49 @@
             o.moveRight = function() {
                 o.x += o.speed
             }
+            o.collide = function(ball) {
+                if(ball.y + ball.image.width > o.y) {
+                    if(ball.x > o.x && ball.x < o.x + o.image.width) {
+                        return true
+                    }
+                }
+                return false
+            }
             return o
         }
 
+        var Ball = function() {
+            var image = imageFromPath("img/ball.png")
+            var o = {
+                image: image,
+                x: 200,
+                y: 200,
+                speedX: 10,
+                speedY: 10,
+                fired: false,
+            }
+            o.fire = function() {
+                o.fired = true
+            }
+            o.move = function() {
+                if(o.fired) {
+                    if(o.x < 0 || o.x > 400) {
+                        o.speedX = -o.speedX
+                    }
+                    if(o.y < 0 || o.y > 300) {
+                        o.speedY = -o.speedY
+                    }
+                    o.x += o.speedX
+                    o.y += o.speedY
+                }
+            }
+            return o
+        }
         var __main = function() {
             var game = Game()
+
             var paddle = Paddle()
+            var ball = Ball()
 
             game.registerAction("a", function() {
                 paddle.moveLeft()
@@ -100,6 +137,9 @@
                 paddle.moveRight()
             })
 
+            game.registerAction("f", function() {
+                ball.fire()
+            })
             // var leftDown = false
             // var rightDown = false
             //
@@ -128,10 +168,15 @@
                 // } else if (rightDown) {
                 //     paddle.moveRight()
                 // }
+                ball.move()
+                if(paddle.collide(ball)) {
+                    ball.speedY *= -1
+                }
             }
 
             game.draw = function() {
                 game.drawImage(paddle)
+                game.drawImage(ball)
             }
 
             // setInterval(function() {
