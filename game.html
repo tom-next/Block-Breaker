@@ -21,7 +21,7 @@
             return img
         }
 
-        var Game = function() {
+        var Game = function(fps) {
             // 将监听的事件移至对象里面，抽象至 Game 里面去
             var g = {
                 actions: {},  // 存储事件定义函数
@@ -66,7 +66,7 @@
                 context.clearRect(0, 0, g.canvas.width, g.canvas.height)
                 // draw
                 g.draw()
-            }, 1000 / 30)
+            }, 1000 / fps)
 
             return g
         }
@@ -79,11 +79,28 @@
                 y: 200,
                 speed: 15,
             }
+            o.move = function(x) {
+                if(x < 0){
+                    x = 0
+                }
+                if(x > 400 - o.image.width) {
+                    x = 400 - o.image.width
+                }
+                o.x = x
+            }
             o.moveLeft = function() {
-                o.x -= o.speed
+                // o.x -= o.speed
+                o.move(o.x - o.speed)
+                // if(o.x < 0) {
+                //     o.x = 0
+                // }
             }
             o.moveRight = function() {
-                o.x += o.speed
+                // o.x += o.speed
+                o.move(o.x + o.speed)
+                // if(o.x > 400 - o.image.width) {
+                //     o.x = 400 - o.image.width
+                // }
             }
             o.collide = function(ball) {
                 if(ball.y + ball.image.width > o.y) {
@@ -109,6 +126,9 @@
             o.fire = function() {
                 o.fired = true
             }
+            o.rebound = function() {
+                o.speedY *= -1
+            }
             o.move = function() {
                 if(o.fired) {
                     if(o.x < 0 || o.x > 400) {
@@ -124,11 +144,50 @@
             return o
         }
 
+        var rectIntersects = function(a, b) {
+            if(b.y > a.y && b.y < a.y + a.image.width) {
+                if(b.x > a.x && b.x < a.x + a.image.width) {
+                    return true
+                }
+            }
+            return false
+        }
+
+        var Block = function() {
+            var image = imageFromPath("img/block.png")
+            var o = {
+                image: image,
+                x: 100,
+                y: 150,
+                width: 27,
+                height: 27,
+                alive: true,
+            }
+            o.kill = function() {
+                o.alive = false
+            }
+
+            o.collide = function(ball) {
+                return o.alive && (rectIntersects(o, ball) || rectIntersects(ball, o))
+            }
+
+            return o
+        }
+
         var __main = function() {
-            var game = Game()
+            var game = Game(30)
 
             var paddle = Paddle()
             var ball = Ball()
+
+            var blocks = []
+            for (var i = 0; i < 3; i++) {
+                var b = Block()
+                b.x = i * 150
+                b.y = 50
+                blocks.push(b)
+            }
+
 
             game.registerAction("a", function() {
                 paddle.moveLeft()
@@ -145,13 +204,31 @@
             game.update = function() {
                 ball.move()
                 if(paddle.collide(ball)) {
-                    ball.speedY *= -1
+                    ball.rebound()
+                }
+
+                for (var i = 0; i < blocks.length; i++) {
+                    var b = blocks[i]
+                    if(b.collide(ball)) {
+                        log("block 相撞")
+                        b.kill()
+                        ball.rebound()
+                    }
                 }
             }
 
             game.draw = function() {
                 game.drawImage(paddle)
                 game.drawImage(ball)
+
+                for (var i = 0; i < blocks.length; i++) {
+                    var b = blocks[i]
+                    // draw
+                    if(b.alive) {
+                        game.drawImage(b)
+                    }
+                }
+
             }
         }
 
