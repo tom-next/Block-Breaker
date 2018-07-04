@@ -8,48 +8,63 @@
                 border: 1px solid black;
             }
         </style>
+        <script type="text/javascript" src="utils.js"></script>
         <script type="text/javascript" src="game.js"></script>
         <script type="text/javascript" src="block.js"></script>
         <script type="text/javascript" src="ball.js"></script>
         <script type="text/javascript" src="paddle.js"></script>
+        <script type="text/javascript" src="level.js"></script>
     </head>
     <body>
         <canvas id="id-canvas" width="400" height="300"></canvas>
     </body>
     <script type="text/javascript">
-        var log = console.log.bind(console)
 
-        var imageFromPath = function(path) {
-            var img = new Image()
-            img.src = path
-            return img
+        var enableDebugMode = function(enable) {
+            if(!enable) {
+                return;
+            }
+            window.addEventListener("keydown", function(event) {
+                var k = event.key
+                if(k === "p") {
+                    // 暂停功能
+                    paused = !paused
+                }else if ("123456789".includes(k)) {
+                    // 关卡
+                    blocks = loadLeves(Number(k))
+                }
+            })
         }
 
-        var paused = false
-
-        var rectIntersects = function(a, b) {
-            if(b.y > a.y && b.y < a.y + a.image.width) {
-                if(b.x > a.x && b.x < a.x + a.image.width) {
-                    return true
-                }
+        var loadLeves = function(n) {
+            n = n - 1
+            var level = leves[n]
+            var blocks = []
+            for (var i = 0; i < level.length; i++) {
+                var p = level[i]
+                var b = Block(p)
+                // b.x = p[0]
+                // b.y = p[1]
+                blocks.push(b)
             }
-            return false
+            return blocks
         }
 
         var __main = function() {
+            enableDebugMode(true)
             var game = Game(30)
 
             var paddle = Paddle()
             var ball = Ball()
 
-            var blocks = []
-            for (var i = 0; i < 3; i++) {
-                var b = Block()
-                b.x = i * 150
-                b.y = 50
-                blocks.push(b)
-            }
-
+            // var blocks = []
+            // for (var i = 0; i < 3; i++) {
+            //     var b = Block()
+            //     b.x = i * 150
+            //     b.y = 50
+            //     blocks.push(b)
+            // }
+            blocks = loadLeves(1)
             game.registerAction("a", function() {
                 paddle.moveLeft()
             })
@@ -70,7 +85,7 @@
                 if(paddle.collide(ball)) {
                     ball.rebound()
                 }
-
+                // log("blocks", blocks.length)
                 for (var i = 0; i < blocks.length; i++) {
                     var b = blocks[i]
                     if(b.collide(ball)) {
@@ -84,7 +99,7 @@
             game.draw = function() {
                 game.drawImage(paddle)
                 game.drawImage(ball)
-
+                // log("blocks", blocks.length)
                 for (var i = 0; i < blocks.length; i++) {
                     var b = blocks[i]
                     // draw

@@ -1,4 +1,3 @@
-
 var Game = function(fps) {
     // 将监听的事件移至对象里面，抽象至 Game 里面去
     var g = {
@@ -17,13 +16,7 @@ var Game = function(fps) {
     g.registerAction = function(key, callback) {
         g.actions[key] = callback
     }
-
-    window.addEventListener("keydown", function(event) {
-        if(event.key === "p") {
-            paused = !paused
-        }
-    })
-
+    
     // drawImage
     g.drawImage = function(GuaImage) {
         g.context.drawImage(GuaImage.image, GuaImage.x, GuaImage.y)
