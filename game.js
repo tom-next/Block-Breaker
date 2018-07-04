@@ -16,7 +16,7 @@ var Game = function(fps) {
     g.registerAction = function(key, callback) {
         g.actions[key] = callback
     }
-    
+
     // drawImage
     g.drawImage = function(GuaImage) {
         g.context.drawImage(GuaImage.image, GuaImage.x, GuaImage.y)
@@ -27,8 +27,10 @@ var Game = function(fps) {
 
     g.canvas = canvas
     g.context = context
-
-    setInterval(function() {
+    
+    window.fps = 30
+    // 需求: 为了在程序运行中动态的修改 fps, 修改为 setTimeout 来解决
+    var runloop = function() {
         // update
         var actions = Object.keys(g.actions)
         for (var i = 0; i < actions.length; i++) {
@@ -43,7 +45,29 @@ var Game = function(fps) {
         context.clearRect(0, 0, g.canvas.width, g.canvas.height)
         // draw
         g.draw()
+        setTimeout(function() {
+            runloop()
+        }, 1000 / window.fps)
+    }
+    setTimeout(function() {
+        runloop()
     }, 1000 / fps)
+    // setInterval(function() {
+    //     // update
+    //     var actions = Object.keys(g.actions)
+    //     for (var i = 0; i < actions.length; i++) {
+    //         var key = actions[i]
+    //         if(g.keydowns[key]) {
+    //             // 被按下
+    //             g.actions[key]()
+    //         }
+    //     }
+    //     g.update()
+    //     // clear
+    //     context.clearRect(0, 0, g.canvas.width, g.canvas.height)
+    //     // draw
+    //     g.draw()
+    // }, 1000 / fps)
 
     return g
 }

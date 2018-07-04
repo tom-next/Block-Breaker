@@ -17,6 +17,8 @@
     </head>
     <body>
         <canvas id="id-canvas" width="400" height="300"></canvas>
+        <hr>
+        <input type="range" id=id-input-speed  value="1">
     </body>
     <script type="text/javascript">
 
@@ -33,6 +35,12 @@
                     // 关卡
                     blocks = loadLeves(Number(k))
                 }
+            })
+
+            // 控制速度
+            document.querySelector("#id-input-speed").addEventListener("input", function(e) {
+                log("event", e.target.value)
+                window.fps = Number(e.target.value)
             })
         }
 
