@@ -6,6 +6,7 @@ var Paddle = function() {
         y: 200,
         speed: 15,
     }
+    
     o.move = function(x) {
         if(x < 0){
             x = 0
@@ -15,20 +16,15 @@ var Paddle = function() {
         }
         o.x = x
     }
+
     o.moveLeft = function() {
-        // o.x -= o.speed
         o.move(o.x - o.speed)
-        // if(o.x < 0) {
-        //     o.x = 0
-        // }
     }
+
     o.moveRight = function() {
-        // o.x += o.speed
         o.move(o.x + o.speed)
-        // if(o.x > 400 - o.image.width) {
-        //     o.x = 400 - o.image.width
-        // }
     }
+
     o.collide = function(ball) {
         if(ball.y + ball.image.width > o.y) {
             if(ball.x > o.x && ball.x < o.x + o.image.width) {

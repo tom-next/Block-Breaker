@@ -2,8 +2,8 @@ var Ball = function() {
     var image = imageFromPath("img/ball.png")
     var o = {
         image: image,
-        x: 200,
-        y: 200,
+        x: 220,
+        y: 180,
         speedX: 10,
         speedY: 10,
         fired: false,
