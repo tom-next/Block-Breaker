@@ -1,8 +1,12 @@
-var Game = function(fps) {
+var Game = function(fps, images, runCallback) {
+
+    // images: 加载的图片资源路径
+
     // 将监听的事件移至对象里面，抽象至 Game 里面去
     var g = {
         actions: {},  // 存储事件定义函数
         keydowns: {}, // 存储按键的状态
+        images: {},   // 有个想法是切换关卡的时候加载图片, 先在这里统一加载
     }
     // events
     window.addEventListener("keydown", function(event) {
@@ -49,9 +53,42 @@ var Game = function(fps) {
             runloop()
         }, 1000 / window.fps)
     }
-    setTimeout(function() {
-        runloop()
-    }, 1000 / fps)
+
+
+    // 加载图片后, 引用
+    var names = Object.keys(images)
+    for (let i = 0; i < names.length; i++) {
+        let n = names[i]
+        let path = images[n]
+
+        let img = new Image()
+        img.src = path
+
+        img.onload = function() {
+            // 加载完成之后，启动游戏
+            g.images[n] = img
+            if(i === names.length - 1) {
+                g.run()
+            }
+        }
+    }
+
+    g.imageByName = function(name) {
+        var img = g.images[name]
+        var image = {
+            image: img,
+            w: img.width,
+            h: img.height,
+        }
+        return image
+    }
+
+    g.run = function() {
+        runCallback(g)
+        setTimeout(function() {
+            runloop()
+        }, 1000 / fps)
+    }
 
     return g
 }
