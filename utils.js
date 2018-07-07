@@ -8,9 +8,13 @@ var imageFromPath = function(path) {
 
 var paused = false
 
+var aInb = function(x, x1, x2) {
+    return x >= x1 && x <= x2
+}
+
 var rectIntersects = function(a, b) {
-    if(b.y > a.y && b.y < a.y + a.image.width) {
-        if(b.x > a.x && b.x < a.x + a.image.width) {
+    if(aInb(a.x, b.x, b.x + b.w) || aInb(b.x, a.x, a.x + a.w)) {
+        if(aInb(a.y, b.y, b.y + b.h) || aInb(b.y, a.y, a.y + a.h)) {
             return true
         }
     }

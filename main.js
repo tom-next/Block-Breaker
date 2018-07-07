@@ -1,4 +1,4 @@
-var enableDebugMode = function(enable) {
+var enableDebugMode = function(game, enable) {
     if(!enable) {
         return;
     }
@@ -9,7 +9,7 @@ var enableDebugMode = function(enable) {
             paused = !paused
         }else if ("123456789".includes(k)) {
             // 关卡
-            blocks = loadLeves(Number(k))
+            blocks = loadLeves(game, Number(k))
         }
     })
 
@@ -17,6 +17,7 @@ var enableDebugMode = function(enable) {
     document.querySelector("#id-input-speed").addEventListener("input", function(e) {
         window.fps = Number(e.target.value)
     })
+
 }
 
 var loadLeves = function(game, n) {
@@ -32,7 +33,6 @@ var loadLeves = function(game, n) {
 }
 
 var __main = function() {
-    enableDebugMode(true)
 
     // todo 新的想法 做成一个数组，对应的关卡加载对应的资源文件，目前先全部加载
     var images = {
@@ -67,7 +67,6 @@ var __main = function() {
             if(paddle.collide(ball)) {
                 ball.rebound()
             }
-            // log("blocks", blocks.length)
             for (var i = 0; i < blocks.length; i++) {
                 var b = blocks[i]
                 if(b.collide(ball)) {
@@ -78,6 +77,10 @@ var __main = function() {
         }
 
         game.draw = function() {
+            // draw backImg
+            game.context.fillStyle = "green";
+            game.context.fillRect(0, 0, game.canvas.width, game.canvas.height);
+
             game.drawImage(paddle)
             game.drawImage(ball)
             for (var i = 0; i < blocks.length; i++) {
@@ -90,6 +93,33 @@ var __main = function() {
             // draw text
             game.context.fillText("分数: "+score, 10, 290);
         }
+
+        var enableDrag = false
+        game.canvas.addEventListener("mousedown", function(event) {
+            var x = event.offsetX
+            var y = event.offsetY
+            // 设置 可以拖动
+            if(ball.hasPoint(x, y)) {
+                enableDrag = true
+            }
+        })
+
+        game.canvas.addEventListener("mousemove", function(event) {
+            var x = event.offsetX
+            var y = event.offsetY
+            if(enableDrag) {
+                ball.x = x
+                ball.y = y
+            }
+        })
+
+        game.canvas.addEventListener("mouseup", function(event) {
+            var x = event.offsetX
+            var y = event.offsetY
+            enableDrag = false
+        })
+        enableDebugMode(game, true)
+
     })
 
 
