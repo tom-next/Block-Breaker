@@ -32,7 +32,6 @@ var loadLeves = function(game, n) {
 }
 
 var __main = function() {
-
     // todo 新的想法 做成一个数组，对应的关卡加载对应的资源文件，目前先全部加载
     var images = {
         ball: "img/ball.png",
@@ -41,15 +40,16 @@ var __main = function() {
         block: "img/block.png",
     }
     // 异步记载
-    var game = Game(30, images, function() {
+    var game = Game(30, images, function(game) {
 
         var s = Scene(game)
-        game.update = function() {
-            s.update()
-        }
-        game.draw = function() {
-            s.draw()
-        }
+        game.runWithScene(s)
+        // game.update = function() {
+        //     s.update()
+        // }
+        // game.draw = function() {
+        //     s.draw()
+        // }
         enableDebugMode(game, true)
 
     })

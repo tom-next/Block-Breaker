@@ -1,9 +1,9 @@
 var Game = function(fps, images, runCallback) {
 
     // images: 加载的图片资源路径
-
     // 将监听的事件移至对象里面，抽象至 Game 里面去
     var g = {
+        scene: null,
         actions: {},  // 存储事件定义函数
         keydowns: {}, // 存储按键的状态
         images: {},   // 有个想法是切换关卡的时候加载图片, 先在这里统一加载
@@ -83,11 +83,23 @@ var Game = function(fps, images, runCallback) {
         return image
     }
 
-    g.run = function() {
-        runCallback(g)
+    g.update = function() {
+        g.scene && g.scene.update()
+    }
+
+    g.draw = function() {
+        g.scene && g.scene.draw()
+    }
+
+    g.runWithScene = function(scene) {
+        g.scene = scene
         setTimeout(function() {
             runloop()
         }, 1000 / fps)
+    }
+
+    g.run = function() {
+        runCallback(g)
     }
 
     return g
