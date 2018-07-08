@@ -47,6 +47,11 @@ var Scene = function(game) {
             return;
         }
         ball.move()
+        if(ball.y > paddle.y) {
+            var end = SceneEnd(game)
+            game.replaceScene(end)
+            return;
+        }
         if(paddle.collide(ball)) {
             ball.rebound()
         }
@@ -74,7 +79,7 @@ var Scene = function(game) {
             }
         }
         // draw text
-        game.context.fillText("分数: "+score, 10, 290);
+        game.context.fillText("分数: "+score, 10, 290)
     }
     return s
 }

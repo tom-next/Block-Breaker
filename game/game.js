@@ -83,6 +83,10 @@ var Game = function(fps, images, runCallback) {
         return image
     }
 
+    g.replaceScene = function(scene) {
+        g.scene = scene
+    }
+
     g.update = function() {
         g.scene && g.scene.update()
     }
