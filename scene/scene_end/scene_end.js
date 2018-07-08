@@ -8,9 +8,12 @@ var SceneEnd = function(game) {
     }
 
     s.draw = function() {
-        game.context.fillText("Game Over", game.canvas.width / 2 - 20, game.canvas.height / 2)
+        game.context.fillText("Game Over, 按 r 返回开始页面", game.canvas.width / 2 - 20, game.canvas.height / 2)
 
     }
-
+    game.registerAction('r', function() {
+        var s = SceneStart(game)
+        game.replaceScene(s)
+    })
     return s
 }

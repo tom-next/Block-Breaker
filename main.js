@@ -41,20 +41,10 @@ var __main = function() {
     }
     // 异步记载
     var game = Game(30, images, function(game) {
-
-        var s = Scene(game)
+        var s = SceneStart(game)
         game.runWithScene(s)
-        // game.update = function() {
-        //     s.update()
-        // }
-        // game.draw = function() {
-        //     s.draw()
-        // }
         enableDebugMode(game, true)
-
     })
-
-
 }
 
 __main()
