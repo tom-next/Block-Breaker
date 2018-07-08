@@ -1,4 +1,4 @@
-var Scene = function(game) {
+var SceneMain = function(game) {
     var s = {
 
     }

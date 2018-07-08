@@ -12,7 +12,7 @@ var SceneEnd = function(game) {
 
     }
     game.registerAction('r', function() {
-        var s = SceneStart(game)
+        var s = SceneStart.new(game)
         game.replaceScene(s)
     })
     return s

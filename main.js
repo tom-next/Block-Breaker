@@ -41,7 +41,7 @@ var __main = function() {
     }
     // 异步记载
     var game = Game(30, images, function(game) {
-        var s = SceneStart(game)
+        var s = SceneStart.new(game)
         game.runWithScene(s)
         enableDebugMode(game, true)
     })
