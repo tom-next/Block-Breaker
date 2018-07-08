@@ -40,7 +40,7 @@ var __main = function() {
         block: "img/block.png",
     }
     // 异步记载
-    var game = Game(30, images, function(game) {
+    var game = Game.instance(30, images, function(game) {
         var s = SceneStart.new(game)
         game.runWithScene(s)
         enableDebugMode(game, true)
