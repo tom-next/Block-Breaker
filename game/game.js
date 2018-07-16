@@ -142,7 +142,11 @@ class Game {
 
     // drawImage
     drawImage(GuaImage) {
-        this.context.drawImage(GuaImage.image, GuaImage.x, GuaImage.y)
+        if(GuaImage.w) {
+            this.context.drawImage(GuaImage.image, GuaImage.x, GuaImage.y, GuaImage.w, GuaImage.h)
+        }else {
+            this.context.drawImage(GuaImage.image, GuaImage.x, GuaImage.y)
+        }
     }
 
     runloop() {

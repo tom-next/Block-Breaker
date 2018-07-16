@@ -19,6 +19,15 @@ var Block = function(game, position) {
         }
     }
 
+    o.hasPoint = function (x, y, item) {
+        var o = item
+        if (y > o.y && y < o.y + 30) {
+            if (x > o.x && x < o.x + 30) {
+                return true
+            }
+        }
+    }
+
     o.collide = function(ball) {
         return o.alive && (rectIntersects(o, ball) || rectIntersects(ball, o))
     }

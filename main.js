@@ -20,13 +20,15 @@ var enableDebugMode = function(game, enable) {
 }
 
 var loadLeves = function(game, n) {
-    n = n - 1
-    var level = leves[n]
+    // var level = leves[0]
+    // 现在循环加入三个砖块
     var blocks = []
-    for (var i = 0; i < level.length; i++) {
-        var p = level[i]
-        var b = Block(game, p)
-        blocks.push(b)
+    var leves = JSON.parse(localStorage.leve)
+    var m = leves[n - 1] || []
+    for (var i = 0; i < m.length; i++) {
+        var p = m[i]
+        var block = Block(game, p)
+        blocks.push(block)
     }
     return blocks
 }
@@ -38,6 +40,15 @@ var __main = function() {
         paddle: "img/paddle.png",
         backImg: "img/bg.png",
         block: "img/block.png",
+        bg: "img/bg.png",
+        1: 'img/1.png',
+        2: 'img/2.png',
+        3: 'img/3.png',
+        4: 'img/4.png',
+        5: 'img/5.png',
+        6: 'img/6.png',
+        7: 'img/7.png',
+        8: 'img/8.png',
     }
     // 异步记载
     var game = Game.instance(30, images, function(game) {

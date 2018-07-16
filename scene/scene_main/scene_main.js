@@ -1,11 +1,12 @@
 var SceneMain = function(game) {
     var s = {
-
+        
     }
     var paddle = Paddle(game)
     var ball = Ball(game)
     blocks = loadLeves(game, 1)
     var score = 100
+    
     game.registerAction("a", function() {
         paddle.moveLeft()
     })
@@ -41,7 +42,7 @@ var SceneMain = function(game) {
         var y = event.offsetY
         enableDrag = false
     })
-
+    var m  = Bg(game)
     s.update = function() {
         if(paused) {
             return;
@@ -66,9 +67,9 @@ var SceneMain = function(game) {
 
     s.draw = function() {
         // draw backImg
-        game.context.fillStyle = "green";
-        game.context.fillRect(0, 0, game.canvas.width, game.canvas.height);
-
+        // game.context.fillStyle = "green";
+        // game.context.fillRect(0, 0, game.canvas.width, game.canvas.height);
+        game.drawImage(m)
         game.drawImage(paddle)
         game.drawImage(ball)
         for (var i = 0; i < blocks.length; i++) {
