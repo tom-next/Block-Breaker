@@ -170,8 +170,6 @@ class Game {
         }, 1000 / window.fps)
     }
 
-
-
     _init() {
         var g = this
         var names = Object.keys(this.images)
