@@ -40,6 +40,7 @@ var __main = function() {
         paddle: "img/paddle.png",
         backImg: "img/bg.png",
         block: "img/block.png",
+        timg: "img/timg.png",
         bg: "img/bg.png",
         1: 'img/1.png',
         2: 'img/2.png',

@@ -14,8 +14,8 @@ class SceneEdit extends Scene {
     generateBlockByArr(arr) {
         arr.forEach((item) => {
             var block = Block(this.game, item)
-            block.w = 10
-            block.h = 10
+            block.w = block.width
+            block.h = block.height
             this.currenBlocks.push(block)
         })
     }
@@ -24,6 +24,7 @@ class SceneEdit extends Scene {
         this.balls.forEach((item, index) => {
             if(item.hasPoint(x, y, item)) {
                 // 点击的是我们的目标物体
+                this.bg = Bg(this.game, 'bg')
                 self.editIndex = index
                 self.edit = false
                 self.indexCondition = 2
@@ -48,13 +49,13 @@ class SceneEdit extends Scene {
         for(var i = 1; i < 9; i++) {
             var o = this.game.imageByName(`${i}`)
             o.x = i * 40 + 20
-            o.y = 200
+            o.y = 120
             o.w = 40
             o.h = 40
             o.hasPoint = function(x, y, item) {
                 var o = item
-                if(y > o.y && y < o.y + 30) {
-                    if(x > o.x && x < o.x + 30) {
+                if(y > o.y && y < o.y + o.w) {
+                    if(x > o.x && x < o.x + o.w) {
                         return true
                     }
                 }
@@ -94,8 +95,8 @@ class SceneEdit extends Scene {
                 if(!this.add) {
                     // 生成一个block
                     var block = Block(this.game, this.p)
-                    block.w = 20
-                    block.h = 20
+                    block.w = block.width
+                    block.h = block.height
                     this.currenBlocks.push(block)
                 }
             }
@@ -109,7 +110,9 @@ class SceneEdit extends Scene {
         this.position = []
         this.add = false
         this.currenBlocks = []
-        this.bg = Bg(this.game)
+        this.bg = Bg(this.game, "timg")
+        this.bg.w = this.game.canvas.width
+        this.bg.h = this.game.canvas.height 
         this.balls = []
         this.generateBalls()
         var self = this
@@ -120,17 +123,17 @@ class SceneEdit extends Scene {
         this.balls[this.editIndex].y = 10
         this.game.drawImage(this.balls[this.editIndex])
         this.currenBlocks.forEach((item) => {
-            
             this.game.drawImage(item)
         })
     }
     drawSelectLeveEdit() {
+        let color = "black"
+        this.drawText("20px Arial", color, `请选择编辑的关卡：`, 100, 80)
+        this.drawText("10px Arial", color, `(确认成功编辑之后按 s 保存)`, 100, 200)
+        this.drawText("10px Arial", color, `(按 k 开始游戏， 切换关卡按键为 1-8 )`, 100, 230)
         this.balls.forEach((item) => {
             this.game.drawImage(item)
         })
-        this.drawText("10px Arial", "green", `请选择编辑的关卡：`, 100, 100)
-        this.drawText("10px Arial", "green", `(确认成功编辑之后按 s 保存)`, 100, 150)
-        this.drawText("10px Arial", "green", `(按 k 开始游戏， 切换关卡按键为 1-8 )`, 100, 180)
     }
     draw() {
         this.game.drawImage(this.bg)

@@ -42,7 +42,7 @@ var SceneMain = function(game) {
         var y = event.offsetY
         enableDrag = false
     })
-    var m  = Bg(game)
+    var m  = Bg(game, "bg")
     s.update = function() {
         if(paused) {
             return;
